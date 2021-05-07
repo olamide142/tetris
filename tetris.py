@@ -37,9 +37,11 @@ class TColor(Enum):
 
 class Block:
 
-    def __init__(self, ):
-        ...
+    #[[]]
 
+    @staticmethod
+    def show(screen):
+        draw.rect(screen, TColor.THREE.value, Rect(120,120, 20,20))
 
 
 
@@ -48,11 +50,8 @@ class Block:
 class Grid:
 
 
-    def __init__(self, x,y):
-        
-        self.x      = x
-        self.y      = y
-
+    def __init__(self):
+        ...
 
 
     def __call__(self, screen)-> None:
@@ -67,8 +66,7 @@ class Grid:
             draw.line(screen, TColor.TEAL.value, (y,120), (y,460), 2)
 
 
-
-
+                
 
 
 
@@ -79,7 +77,7 @@ def main()-> int:
     screen = display.set_mode(SCREENRECT.size)
     display.set_caption("tetris by olamide142")
     
-    mouse.set_visible(0)
+    #mouse.set_visible(0)
 
     
     background = Surface(SCREENRECT.size)
@@ -100,10 +98,11 @@ def main()-> int:
         
 
         #Call the grid
-        grid = Grid(5,5)
+        grid = Grid()
         grid(screen)
 
-        
+        #block
+        Block.show(screen)
 
         display.flip()
 
