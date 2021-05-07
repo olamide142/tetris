@@ -13,21 +13,34 @@
 from enum import Enum
 
 from pygame import Rect, Surface, QUIT,\
-        display, mouse, init, event, \
+        Color, display, mouse, init, event, \
         draw, quit
 
 
-SCREENRECT = Rect(0, 0, 640, 480)
+SCREENRECT = Rect(0, 0, 700, 500)
 
 
 
 class TColor(Enum):
 
-    ONE         = 204, 219, 220
-    TWO         = 154, 209, 212
-    THREE       = 128, 206, 215
-    FOUR        = 0, 126, 167
-    BG          = 0, 50, 73
+    ONE         = Color(204, 219, 220)
+    TWO         = Color(154, 209, 212)
+    THREE       = Color(128, 206, 215)
+    FOUR        = Color(0, 126, 167)
+    BG          = Color(0, 50, 73)
+    TEAL        = Color(0, 174, 158)
+
+
+
+
+
+
+class Block:
+
+    def __init__(self, ):
+        ...
+
+
 
 
 
@@ -45,15 +58,19 @@ class Grid:
     def __call__(self, screen)-> None:
     
         block_size = 20 #Set the size of the grid block
-        
-        for x in range(150, SCREENRECT.size[0]+5, block_size):
-        
-            for y in range(5, SCREENRECT.size[1]+5, block_size):
-            
-                rect = Rect(x, y, block_size, block_size)
-                draw.line(screen, TColor.ONE.value, (x*block_size, 10), (300,300))
-            print(f"{x} ","") 
-            # import sys, sys.exit
+
+
+        for x in range(120, 480, 20):
+            draw.line(screen, TColor.ONE.value, (120,x), (380,x), 2)
+
+        for y in range(120, 400, 20):
+            draw.line(screen, TColor.TEAL.value, (y,120), (y,460), 2)
+
+
+
+
+
+
 
 def main()-> int:
     
