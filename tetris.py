@@ -14,8 +14,9 @@ from enum import Enum
 
 from pygame import Rect, Surface, QUIT,\
         Color, display, mouse, init, event, \
-        draw, quit
+        draw, quit, time, key
 
+from pygame.locals import *
 
 SCREENRECT = Rect(0, 0, 700, 500)
 
@@ -33,17 +34,47 @@ class TColor(Enum):
 
 
 
-
+blocks_filled = set()
 
 class Block:
 
-    #[[]]
+    
+    block_size = 20
 
-    @staticmethod
-    def show(screen):
-        draw.rect(screen, TColor.THREE.value, Rect(120,120, 20,20))
+    
+    def __init__(self, M: int, N: int):
+
+        self.M      = M
+        self.N      = N
 
 
+    def show(self, screen: Surface)-> None:
+        print(self.M, self.N)        
+        blocks_filled.add((self.M, self.N))
+        a = 120+(self.M*20)
+        b = 120+(self.N*20)
+        draw.rect(screen, 
+                TColor.THREE.value, 
+                Rect(a,b, 20,20)
+        )
+        
+
+
+    def move(self, screen: Surface, direction: int)-> None:
+           
+        blocks_filled.remove((self.M, self.N))
+        
+        if direction == 2:
+            self.M += 1 
+        if direction == 3:
+            self.N += 1
+        if direction == 4:
+            self.M -= 1
+
+        self.show(screen)
+            
+        
+    
 
 
 
@@ -54,7 +85,7 @@ class Grid:
         ...
 
 
-    def __call__(self, screen)-> None:
+    def __call__(self, screen: Surface)-> None:
     
         block_size = 20 #Set the size of the grid block
 
@@ -68,7 +99,7 @@ class Grid:
 
                 
 
-
+a = Block(3,3)
 
 def main()-> int:
     
@@ -77,7 +108,7 @@ def main()-> int:
     screen = display.set_mode(SCREENRECT.size)
     display.set_caption("tetris by olamide142")
     
-    #mouse.set_visible(0)
+    mouse.set_visible(0)
 
     
     background = Surface(SCREENRECT.size)
@@ -90,7 +121,9 @@ def main()-> int:
     
     while running:
         
-        for e in event.get(): 
+        events = event.get() or [event.Event(-100_000)]
+        
+        for e in events: 
             if e.type == QUIT:
                 quit()
         
@@ -101,11 +134,21 @@ def main()-> int:
         grid = Grid()
         grid(screen)
 
-        #block
-        Block.show(screen)
+                
+        a.show(screen)
+       
+        
+        # Get User Input
+        pressed_key = key.get_pressed()
+        if events[0].type == KEYDOWN:
+            if pressed_key[K_RIGHT]: a.move(screen, 2)
+            if pressed_key[K_LEFT]:  a.move(screen, 4)
+            if pressed_key[K_DOWN]:  a.move(screen, 3)
+
+
 
         display.flip()
-
+        display.update()
 
 
 
